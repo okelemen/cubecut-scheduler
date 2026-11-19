@@ -1,0 +1,3 @@
+media/*.enc
+videos/*.mp4
+__pycache__/

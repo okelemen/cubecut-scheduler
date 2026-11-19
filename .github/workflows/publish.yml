@@ -1,0 +1,101 @@
+name: CubeCut exact Turkey-time publication
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+    inputs:
+      slot:
+        required: true
+        type: choice
+        options:
+          - morning
+          - evening
+      date:
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cubecut-publication
+  cancel-in-progress: false
+
+jobs:
+  morning:
+    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 6 * * *') || (github.event_name == 'workflow_dispatch' && inputs.slot == 'morning') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    environment: cubecut
+    env:
+      OVERRIDE_DATE: ${{ inputs.date }}
+      GH_TOKEN: ${{ github.token }}
+      CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
+      CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
+      CUBECUT_MEDIA_KEY: ${{ secrets.CUBECUT_MEDIA_KEY }}
+      CUBECUT_LIVE_ENABLED: ${{ vars.CUBECUT_LIVE_ENABLED }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Stage at 12:00 and publish at 14:00 Turkey time
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$CUBECUT_LIVE_ENABLED" = true
+          TARGET_DATE="${OVERRIDE_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          pip install -q cryptography==50.0.1
+          python3 prepare_media.py "$TARGET_DATE" 14:00
+          python3 publisher.py --schedule '53 11 * * *' --dry-run --date "$TARGET_DATE"
+          git config user.name 'cubecut-scheduler[bot]'
+          git config user.email 'cubecut-scheduler[bot]@users.noreply.github.com'
+          python3 wait_until.py "$TARGET_DATE" 11:53
+          python3 publisher.py --schedule '53 11 * * *'
+          git add state.json
+          git commit -m "Record $TARGET_DATE 12:00 private upload"
+          git push origin HEAD:main
+          python3 wait_until.py "$TARGET_DATE" 13:53
+          python3 publisher.py --schedule '53 13 * * *'
+          git add state.json
+          git commit -m "Record $TARGET_DATE 14:00 public release"
+          git push origin HEAD:main
+
+  evening:
+    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 13 * * *') || (github.event_name == 'workflow_dispatch' && inputs.slot == 'evening') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    environment: cubecut
+    env:
+      OVERRIDE_DATE: ${{ inputs.date }}
+      GH_TOKEN: ${{ github.token }}
+      CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
+      CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
+      CUBECUT_MEDIA_KEY: ${{ secrets.CUBECUT_MEDIA_KEY }}
+      CUBECUT_LIVE_ENABLED: ${{ vars.CUBECUT_LIVE_ENABLED }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Stage at 19:00 and publish at 21:00 Turkey time
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$CUBECUT_LIVE_ENABLED" = true
+          TARGET_DATE="${OVERRIDE_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          pip install -q cryptography==50.0.1
+          python3 prepare_media.py "$TARGET_DATE" 21:00
+          python3 publisher.py --schedule '53 18 * * *' --dry-run --date "$TARGET_DATE"
+          git config user.name 'cubecut-scheduler[bot]'
+          git config user.email 'cubecut-scheduler[bot]@users.noreply.github.com'
+          python3 wait_until.py "$TARGET_DATE" 18:53
+          python3 publisher.py --schedule '53 18 * * *'
+          git add state.json
+          git commit -m "Record $TARGET_DATE 19:00 private upload"
+          git push origin HEAD:main
+          python3 wait_until.py "$TARGET_DATE" 20:53
+          python3 publisher.py --schedule '53 20 * * *'
+          git add state.json
+          git commit -m "Record $TARGET_DATE 21:00 public release"
+          git push origin HEAD:main

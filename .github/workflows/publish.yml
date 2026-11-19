@@ -3,7 +3,11 @@ name: CubeCut exact Turkey-time publication
 on:
   schedule:
     - cron: '0 6 * * *'
+    - cron: '0 7 * * *'
+    - cron: '0 8 * * *'
     - cron: '0 13 * * *'
+    - cron: '0 14 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch:
     inputs:
       slot:
@@ -29,7 +33,7 @@ concurrency:
 
 jobs:
   morning:
-    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 6 * * *') || (github.event_name == 'workflow_dispatch' && inputs.slot == 'morning') }}
+    if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '0 6 * * *' || github.event.schedule == '0 7 * * *' || github.event.schedule == '0 8 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'morning') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     environment: cubecut
@@ -59,21 +63,15 @@ jobs:
           python3 prepare_media.py "$TARGET_DATE" 14:00
           python3 publisher.py --schedule '53 11 * * *' --dry-run --date "$TARGET_DATE"
           if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
-          git config user.name 'cubecut-scheduler[bot]'
-          git config user.email 'cubecut-scheduler[bot]@users.noreply.github.com'
           python3 wait_until.py "$TARGET_DATE" 11:53
           python3 publisher.py --schedule '53 11 * * *'
-          git add state.json
-          git commit -m "Record $TARGET_DATE 12:00 private upload"
-          git push origin HEAD:main
+          python3 save_state.py "$TARGET_DATE-14:00"
           python3 wait_until.py "$TARGET_DATE" 13:53
           python3 publisher.py --schedule '53 13 * * *'
-          git add state.json
-          git commit -m "Record $TARGET_DATE 14:00 public release"
-          git push origin HEAD:main
+          python3 save_state.py "$TARGET_DATE-14:00"
 
   evening:
-    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 13 * * *') || (github.event_name == 'workflow_dispatch' && inputs.slot == 'evening') }}
+    if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '0 14 * * *' || github.event.schedule == '0 15 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'evening') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     environment: cubecut
@@ -103,15 +101,9 @@ jobs:
           python3 prepare_media.py "$TARGET_DATE" 21:00
           python3 publisher.py --schedule '53 18 * * *' --dry-run --date "$TARGET_DATE"
           if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
-          git config user.name 'cubecut-scheduler[bot]'
-          git config user.email 'cubecut-scheduler[bot]@users.noreply.github.com'
           python3 wait_until.py "$TARGET_DATE" 18:53
           python3 publisher.py --schedule '53 18 * * *'
-          git add state.json
-          git commit -m "Record $TARGET_DATE 19:00 private upload"
-          git push origin HEAD:main
+          python3 save_state.py "$TARGET_DATE-21:00"
           python3 wait_until.py "$TARGET_DATE" 20:53
           python3 publisher.py --schedule '53 20 * * *'
-          git add state.json
-          git commit -m "Record $TARGET_DATE 21:00 public release"
-          git push origin HEAD:main
+          python3 save_state.py "$TARGET_DATE-21:00"

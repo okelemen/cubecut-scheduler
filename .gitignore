@@ -1,3 +1,4 @@
 media/*.enc
+media/*.enc.part*
 videos/*.mp4
 __pycache__/

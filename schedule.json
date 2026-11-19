@@ -8,38 +8,7 @@
       "video": "videos/orange.mp4",
       "sha256": "9a95a5b1649d3ee018d2149a6c9243b3c044f0c2f2471354753fc89771b82a3c",
       "qa_passed": true,
-      "parts": [
-        "videos/orange.chunk00",
-        "videos/orange.chunk01",
-        "videos/orange.chunk02",
-        "videos/orange.chunk03",
-        "videos/orange.chunk04",
-        "videos/orange.chunk05",
-        "videos/orange.chunk06",
-        "videos/orange.chunk07",
-        "videos/orange.chunk08",
-        "videos/orange.chunk09",
-        "videos/orange.chunk10",
-        "videos/orange.chunk11",
-        "videos/orange.chunk12",
-        "videos/orange.chunk13",
-        "videos/orange.chunk14",
-        "videos/orange.chunk15",
-        "videos/orange.chunk16",
-        "videos/orange.chunk17",
-        "videos/orange.chunk18",
-        "videos/orange.chunk19",
-        "videos/orange.chunk20",
-        "videos/orange.chunk21",
-        "videos/orange.chunk22",
-        "videos/orange.chunk23",
-        "videos/orange.chunk24",
-        "videos/orange.chunk25",
-        "videos/orange.chunk26",
-        "videos/orange.chunk27",
-        "videos/orange.chunk28",
-        "videos/orange.chunk29"
-      ]
+      "encrypted_parts": 30
     }
   ]
 }

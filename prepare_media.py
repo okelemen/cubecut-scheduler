@@ -1,8 +1,6 @@
 """Download and verify the encrypted approved video for a publication slot."""
 
-import json
 import os
-from pathlib import Path
 import subprocess
 import sys
 
@@ -18,11 +16,15 @@ encrypted = ROOT / "media" / f"{slug}.enc"
 subprocess.run([
     "gh", "release", "download", f"media-{date}",
     "--repo", os.environ["GITHUB_REPOSITORY"],
-    "--pattern", encrypted.name,
+    "--pattern", f"{encrypted.name}.part*",
     "--dir", str(encrypted.parent), "--clobber",
 ], check=True)
-if not encrypted.is_file():
-    raise RuntimeError("Encrypted media asset is missing")
+parts = sorted(encrypted.parent.glob(f"{encrypted.name}.part*"))
+expected = [encrypted.parent / f"{encrypted.name}.part{i:02d}"
+            for i in range(slot["encrypted_parts"])]
+if parts != expected:
+    raise RuntimeError("An encrypted media part is missing or unexpected")
+encrypted.write_bytes(b"".join(part.read_bytes() for part in parts))
 subprocess.run([
     sys.executable, str(ROOT / "media_crypto.py"), "decrypt",
     str(encrypted), str(ROOT / slot["video"]), "--sha256", slot["sha256"],

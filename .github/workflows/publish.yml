@@ -15,6 +15,10 @@ on:
       date:
         required: false
         type: string
+      dry_run:
+        required: true
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -31,6 +35,7 @@ jobs:
     environment: cubecut
     env:
       OVERRIDE_DATE: ${{ inputs.date }}
+      DRY_RUN: ${{ inputs.dry_run }}
       GH_TOKEN: ${{ github.token }}
       CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
       CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
@@ -49,6 +54,7 @@ jobs:
           pip install -q cryptography==50.0.1
           python3 prepare_media.py "$TARGET_DATE" 14:00
           python3 publisher.py --schedule '53 11 * * *' --dry-run --date "$TARGET_DATE"
+          if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
           git config user.name 'cubecut-scheduler[bot]'
           git config user.email 'cubecut-scheduler[bot]@users.noreply.github.com'
           python3 wait_until.py "$TARGET_DATE" 11:53
@@ -69,6 +75,7 @@ jobs:
     environment: cubecut
     env:
       OVERRIDE_DATE: ${{ inputs.date }}
+      DRY_RUN: ${{ inputs.dry_run }}
       GH_TOKEN: ${{ github.token }}
       CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
       CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
@@ -87,6 +94,7 @@ jobs:
           pip install -q cryptography==50.0.1
           python3 prepare_media.py "$TARGET_DATE" 21:00
           python3 publisher.py --schedule '53 18 * * *' --dry-run --date "$TARGET_DATE"
+          if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
           git config user.name 'cubecut-scheduler[bot]'
           git config user.email 'cubecut-scheduler[bot]@users.noreply.github.com'
           python3 wait_until.py "$TARGET_DATE" 18:53

@@ -51,6 +51,10 @@ jobs:
           set -euo pipefail
           test "$CUBECUT_LIVE_ENABLED" = true
           TARGET_DATE="${OVERRIDE_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          if [[ "$DRY_RUN" != "true" ]] && python3 already_done.py "$TARGET_DATE" 14:00; then
+            echo 'Morning slot already published and commented.'
+            exit 0
+          fi
           pip install -q cryptography==50.0.1
           python3 prepare_media.py "$TARGET_DATE" 14:00
           python3 publisher.py --schedule '53 11 * * *' --dry-run --date "$TARGET_DATE"
@@ -91,6 +95,10 @@ jobs:
           set -euo pipefail
           test "$CUBECUT_LIVE_ENABLED" = true
           TARGET_DATE="${OVERRIDE_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          if [[ "$DRY_RUN" != "true" ]] && python3 already_done.py "$TARGET_DATE" 21:00; then
+            echo 'Evening slot already published and commented.'
+            exit 0
+          fi
           pip install -q cryptography==50.0.1
           python3 prepare_media.py "$TARGET_DATE" 21:00
           python3 publisher.py --schedule '53 18 * * *' --dry-run --date "$TARGET_DATE"

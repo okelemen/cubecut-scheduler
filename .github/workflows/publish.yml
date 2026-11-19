@@ -2,12 +2,12 @@ name: CubeCut exact Turkey-time publication
 
 on:
   schedule:
-    - cron: '0 6 * * *'
-    - cron: '0 7 * * *'
-    - cron: '0 8 * * *'
-    - cron: '0 13 * * *'
-    - cron: '0 14 * * *'
-    - cron: '0 15 * * *'
+    - cron: '17 6 * * *'
+    - cron: '29 7 * * *'
+    - cron: '41 8 * * *'
+    - cron: '17 13 * * *'
+    - cron: '29 14 * * *'
+    - cron: '41 15 * * *'
   workflow_dispatch:
     inputs:
       slot:
@@ -33,7 +33,7 @@ concurrency:
 
 jobs:
   morning:
-    if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '0 6 * * *' || github.event.schedule == '0 7 * * *' || github.event.schedule == '0 8 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'morning') }}
+    if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '17 6 * * *' || github.event.schedule == '29 7 * * *' || github.event.schedule == '41 8 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'morning') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     environment: cubecut
@@ -71,7 +71,7 @@ jobs:
           python3 save_state.py "$TARGET_DATE-14:00"
 
   evening:
-    if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '0 13 * * *' || github.event.schedule == '0 14 * * *' || github.event.schedule == '0 15 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'evening') }}
+    if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '17 13 * * *' || github.event.schedule == '29 14 * * *' || github.event.schedule == '41 15 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'evening') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     environment: cubecut

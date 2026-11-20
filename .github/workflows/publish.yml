@@ -63,7 +63,7 @@ jobs:
           python3 prepare_media.py "$TARGET_DATE" 14:00
           python3 publisher.py --schedule '53 11 * * *' --dry-run --date "$TARGET_DATE"
           if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
-          python3 wait_until.py "$TARGET_DATE" 11:53
+          python3 wait_until.py "$TARGET_DATE" 11:53 --allow-past
           python3 publisher.py --schedule '53 11 * * *'
           python3 save_state.py "$TARGET_DATE-14:00"
           python3 wait_until.py "$TARGET_DATE" 13:53
@@ -101,7 +101,7 @@ jobs:
           python3 prepare_media.py "$TARGET_DATE" 21:00
           python3 publisher.py --schedule '53 18 * * *' --dry-run --date "$TARGET_DATE"
           if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
-          python3 wait_until.py "$TARGET_DATE" 18:53
+          python3 wait_until.py "$TARGET_DATE" 18:53 --allow-past
           python3 publisher.py --schedule '53 18 * * *'
           python3 save_state.py "$TARGET_DATE-21:00"
           python3 wait_until.py "$TARGET_DATE" 20:53

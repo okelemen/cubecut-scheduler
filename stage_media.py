@@ -5,6 +5,7 @@ import base64
 import hashlib
 import os
 from pathlib import Path
+import re
 import subprocess
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -22,9 +23,16 @@ def run(*args, check=True):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("date")
-    parser.add_argument("slug", choices=("banana", "peach"))
+    parser.add_argument("slug")
     parser.add_argument("video", type=Path)
     args = parser.parse_args()
+    if not re.fullmatch(r"[a-z][a-z0-9-]*", args.slug):
+        raise RuntimeError("Invalid object slug")
+    if args.video.name != f"{args.slug}-vs-1000-cuts.mp4":
+        raise RuntimeError("Approved video filename does not match object slug")
+    for suffix in (".json", "-localizations.json"):
+        if not (ROOT / "metadata" / f"{args.slug}{suffix}").is_file():
+            raise RuntimeError("Object metadata or translations are missing")
     if not args.video.is_file():
         raise RuntimeError("QA-approved MP4 is missing")
     key_file = Path.home() / ".cubecut-auth" / "media-key.txt"

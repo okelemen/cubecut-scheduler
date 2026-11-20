@@ -36,6 +36,15 @@
       "sha256": "93d3c3ebe83cde35a2430e1360bab0ae5ed937cf7573ad310af30a826d7189e8",
       "qa_passed": true,
       "encrypted_parts": 29
+    },
+    {
+      "date": "2026-11-21",
+      "time": "21:00",
+      "object": "Tomato",
+      "video": "videos/tomato.mp4",
+      "sha256": "1b9ed503f0e4a539f967306e25bc0fb55536e88c30dcfa163e0b973b2455dfb5",
+      "qa_passed": true,
+      "encrypted_parts": 28
     }
   ]
 }

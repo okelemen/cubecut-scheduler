@@ -27,6 +27,15 @@
       "sha256": "137d5e392840d7c135662b54fb9f35da5420005e10895db1e96d96256e8e7fa1",
       "qa_passed": true,
       "encrypted_parts": 28
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "object": "Pomegranate",
+      "video": "videos/pomegranate.mp4",
+      "sha256": "93d3c3ebe83cde35a2430e1360bab0ae5ed937cf7573ad310af30a826d7189e8",
+      "qa_passed": true,
+      "encrypted_parts": 29
     }
   ]
 }

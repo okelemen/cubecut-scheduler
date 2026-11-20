@@ -18,6 +18,15 @@
       "sha256": "efcdc36471a9ffb1f740a41b5d6c93432eb2188a4dccf701b5129a7b65c7886f",
       "qa_passed": true,
       "encrypted_parts": 25
+    },
+    {
+      "date": "2026-11-20",
+      "time": "21:00",
+      "object": "Peach",
+      "video": "videos/peach.mp4",
+      "sha256": "137d5e392840d7c135662b54fb9f35da5420005e10895db1e96d96256e8e7fa1",
+      "qa_passed": true,
+      "encrypted_parts": 28
     }
   ]
 }

@@ -27,12 +27,11 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: cubecut-publication
-  cancel-in-progress: false
-
 jobs:
   morning:
+    concurrency:
+      group: cubecut-morning-${{ inputs.dry_run && 'dry' || 'live' }}
+      cancel-in-progress: false
     if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '17 6 * * *' || github.event.schedule == '29 7 * * *' || github.event.schedule == '41 8 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'morning') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
@@ -71,6 +70,9 @@ jobs:
           python3 save_state.py "$TARGET_DATE-14:00"
 
   evening:
+    concurrency:
+      group: cubecut-evening-${{ inputs.dry_run && 'dry' || 'live' }}
+      cancel-in-progress: false
     if: ${{ (github.event_name == 'schedule' && (github.event.schedule == '17 13 * * *' || github.event.schedule == '29 14 * * *' || github.event.schedule == '41 15 * * *')) || (github.event_name == 'workflow_dispatch' && inputs.slot == 'evening') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355

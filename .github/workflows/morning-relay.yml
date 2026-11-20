@@ -1,0 +1,35 @@
+name: CubeCut morning early relay
+
+on:
+  schedule:
+    - cron: '11 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 320
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check approved morning slot and dispatch at 09:00 Turkey time
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TARGET_DATE="$(TZ=Europe/Istanbul date +%F)"
+          python3 - "$TARGET_DATE" <<'PY'
+          import json, sys
+          from pathlib import Path
+          slots = json.loads(Path('schedule.json').read_text(encoding='utf-8'))['slots']
+          if not any(s['date'] == sys.argv[1] and s['time'] == '14:00' and s.get('qa_passed') is True for s in slots):
+              raise SystemExit('Approved morning slot is missing; relay stopped')
+          PY
+          python3 wait_until.py "$TARGET_DATE" 09:00 --allow-past
+          gh workflow run publish.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            -f slot=morning -f date="$TARGET_DATE" -f dry_run=false
+          echo "Morning publisher dispatched for $TARGET_DATE"

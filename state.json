@@ -17,7 +17,7 @@
     "video_id": "AKsDC7KDFUY",
     "uploaded": true,
     "localized": true,
-    "public": false,
-    "commented": false
+    "public": true,
+    "commented": true
   }
 }

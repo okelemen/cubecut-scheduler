@@ -45,6 +45,15 @@
       "sha256": "1b9ed503f0e4a539f967306e25bc0fb55536e88c30dcfa163e0b973b2455dfb5",
       "qa_passed": true,
       "encrypted_parts": 28
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "object": "Cucumber",
+      "video": "videos/cucumber.mp4",
+      "sha256": "0bb867fec3d1e3516c0c06d4f90d86ae6fdc1006650a03f78572322cabd5ac79",
+      "qa_passed": true,
+      "encrypted_parts": 23
     }
   ]
 }

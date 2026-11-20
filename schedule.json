@@ -9,6 +9,15 @@
       "sha256": "9a95a5b1649d3ee018d2149a6c9243b3c044f0c2f2471354753fc89771b82a3c",
       "qa_passed": true,
       "encrypted_parts": 30
+    },
+    {
+      "date": "2026-11-20",
+      "time": "14:00",
+      "object": "Banana",
+      "video": "videos/banana.mp4",
+      "sha256": "efcdc36471a9ffb1f740a41b5d6c93432eb2188a4dccf701b5129a7b65c7886f",
+      "qa_passed": true,
+      "encrypted_parts": 25
     }
   ]
 }

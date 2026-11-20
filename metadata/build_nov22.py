@@ -37,7 +37,7 @@ NAMES = {
 }
 assert set(NAMES) == set(translated) and len(NAMES) == 25
 
-for index, (english, count) in enumerate((("Cucumber", 24.6), ("Red Bell Pepper", 13.0))):
+for index, (english, count) in enumerate((("Cucumber", 24.6), ("Red Bell Pepper", 13.4))):
     slug = english.lower().replace(" ", "-")
     noun = english.lower()
     hashtag = noun.replace(" ", "")
@@ -68,3 +68,4 @@ for index, (english, count) in enumerate((("Cucumber", 24.6), ("Red Bell Pepper"
     (ROOT / (slug + ".json")).write_text(json.dumps(package, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (ROOT / (slug + "-localizations.json")).write_text(json.dumps(locales, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(slug, len(locales))
+

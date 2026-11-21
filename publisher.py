@@ -338,7 +338,8 @@ def main():
     if args.recovery:
         if not (timedelta(0) <= now - target <= timedelta(hours=48)):
             raise RuntimeError("Recovery is limited to missed slots within 48 hours")
-    elif target - now > timedelta(minutes=15) or now - target > timedelta(minutes=30):
+    elif target - now > timedelta(minutes=15) or now - target > (
+            timedelta(hours=2) if stage_name == "upload" else timedelta(minutes=30)):
         raise RuntimeError("Job is outside its allowed publication window")
     if now < target:
         time.sleep((target - now).total_seconds())

@@ -23,6 +23,10 @@ on:
         required: true
         default: true
         type: boolean
+      recovery:
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -80,6 +84,7 @@ jobs:
     env:
       OVERRIDE_DATE: ${{ inputs.date }}
       DRY_RUN: ${{ inputs.dry_run }}
+      RECOVERY: ${{ inputs.recovery }}
       GH_TOKEN: ${{ github.token }}
       CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
       CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
@@ -103,6 +108,13 @@ jobs:
           python3 prepare_media.py "$TARGET_DATE" 21:00
           python3 publisher.py --schedule '53 18 * * *' --dry-run --date "$TARGET_DATE"
           if [[ "$DRY_RUN" == "true" ]]; then exit 0; fi
+          if [[ "$RECOVERY" == "true" ]]; then
+            python3 publisher.py --schedule '53 18 * * *' --date "$TARGET_DATE" --recovery
+            python3 save_state.py "$TARGET_DATE-21:00"
+            python3 publisher.py --schedule '53 20 * * *' --date "$TARGET_DATE" --recovery
+            python3 save_state.py "$TARGET_DATE-21:00"
+            exit 0
+          fi
           python3 wait_until.py "$TARGET_DATE" 18:53 --allow-past
           python3 publisher.py --schedule '53 18 * * *'
           python3 save_state.py "$TARGET_DATE-21:00"

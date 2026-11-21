@@ -30,6 +30,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   morning:
@@ -72,6 +73,14 @@ jobs:
           python3 wait_until.py "$TARGET_DATE" 13:53
           python3 publisher.py --schedule '53 13 * * *'
           python3 save_state.py "$TARGET_DATE-14:00"
+      - name: Record failed live morning publication
+        if: ${{ failure() && inputs.dry_run != true }}
+        shell: bash
+        run: |
+          title="CubeCut LIVE FAILED ${OVERRIDE_DATE:-$(TZ=Europe/Istanbul date +%F)} 14:00 TR"
+          if ! gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json title --jq '.[].title' | grep -Fxq "$title"; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "Live publication failed. Check run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID and verify actual YouTube state before retrying."
+          fi
 
   evening:
     concurrency:
@@ -121,3 +130,11 @@ jobs:
           python3 wait_until.py "$TARGET_DATE" 20:53
           python3 publisher.py --schedule '53 20 * * *'
           python3 save_state.py "$TARGET_DATE-21:00"
+      - name: Record failed live evening publication
+        if: ${{ failure() && inputs.dry_run != true }}
+        shell: bash
+        run: |
+          title="CubeCut LIVE FAILED ${OVERRIDE_DATE:-$(TZ=Europe/Istanbul date +%F)} 21:00 TR"
+          if ! gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json title --jq '.[].title' | grep -Fxq "$title"; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "Live publication failed. Check run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID and verify actual YouTube state before retrying."
+          fi

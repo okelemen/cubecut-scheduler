@@ -2,7 +2,7 @@ name: CubeCut morning early relay
 
 on:
   schedule:
-    - cron: '11 1 * * *'
+    - cron: '31 0 * * *'
   workflow_dispatch:
 
 permissions:
@@ -12,7 +12,7 @@ permissions:
 jobs:
   relay:
     runs-on: ubuntu-latest
-    timeout-minutes: 320
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
       - name: Check approved morning slot and dispatch at 09:00 Turkey time

@@ -38,7 +38,7 @@
     "video_id": "ITjtPT5JxIA",
     "uploaded": true,
     "localized": true,
-    "public": false,
-    "commented": false
+    "public": true,
+    "commented": true
   }
 }

@@ -52,7 +52,7 @@
     "video_id": "-IA6038KaiU",
     "uploaded": true,
     "localized": true,
-    "public": false,
-    "commented": false
+    "public": true,
+    "commented": true
   }
 }

@@ -81,6 +81,15 @@
       "sha256": "d8a627f93d39ace7267fcf6d4bee301e532fee8fd411f2ff11cf2f2794985cdc",
       "qa_passed": true,
       "encrypted_parts": 24
+    },
+    {
+      "date": "2026-11-24",
+      "time": "14:00",
+      "object": "Pistachio Kataifi Chocolate Bar",
+      "video": "videos/pistachio-kataifi-chocolate-bar.mp4",
+      "sha256": "2f62a14d0ea692fb37e45095d02ed801947fe6672f06149c7201d4c013799098",
+      "qa_passed": true,
+      "encrypted_parts": 23
     }
   ]
 }

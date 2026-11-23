@@ -47,7 +47,14 @@ jobs:
         if: failure()
         shell: bash
         run: |
-          title="CubeCut PREFLIGHT FAILED ${CHECK_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          if [[ -n "$CHECK_DATE" ]]; then
+            target="$CHECK_DATE"
+          elif [[ "${{ github.event.schedule }}" == '11 20 * * *' ]]; then
+            target="$(TZ=Europe/Istanbul date -d tomorrow +%F)"
+          else
+            target="$(TZ=Europe/Istanbul date +%F)"
+          fi
+          title="CubeCut PREFLIGHT FAILED $target"
           if ! gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json title --jq '.[].title' | grep -Fxq "$title"; then
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" \
               --body "The next publication day is not ready. Inspect run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. Do not claim either slot is ready."

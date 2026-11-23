@@ -1,0 +1,53 @@
+name: CubeCut publication watchdog
+
+on:
+  schedule:
+    - cron: '15 9 * * *'  # 12:15 TR, morning private check
+    - cron: '5 11 * * *'  # 14:05 TR, morning public check
+    - cron: '15 16 * * *' # 19:15 TR, evening private check
+    - cron: '5 18 * * *'  # 21:05 TR, evening public check
+  workflow_dispatch:
+    inputs:
+      slot:
+        required: true
+        type: choice
+        options: [morning, evening]
+      phase:
+        required: true
+        type: choice
+        options: [stage, publish]
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check state and dispatch a bounded backup if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "${{ github.event.schedule }}" in
+            '15 9 * * *')  python3 watchdog.py morning stage ;;
+            '5 11 * * *')  python3 watchdog.py morning publish ;;
+            '15 16 * * *') python3 watchdog.py evening stage ;;
+            '5 18 * * *')  python3 watchdog.py evening publish ;;
+            '') python3 watchdog.py '${{ inputs.slot }}' '${{ inputs.phase }}' ;;
+            *) echo 'Unknown schedule'; exit 1 ;;
+          esac
+      - name: Open failure alarm
+        if: failure()
+        shell: bash
+        run: |
+          title="CubeCut WATCHDOG FAILED $(TZ=Europe/Istanbul date +%F) ${{ inputs.slot || github.event.schedule }}"
+          if ! gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json title --jq '.[].title' | grep -Fxq "$title"; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" \
+              --body "A publication state was missing or the backup dispatch failed. Inspect run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID and verify YouTube before retrying."
+          fi

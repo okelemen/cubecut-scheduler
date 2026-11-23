@@ -72,6 +72,15 @@
       "sha256": "4d555756b40340e4c2bcd1085030b775ae838a2f0e0f574f700427efaa1adf54",
       "qa_passed": true,
       "encrypted_parts": 26
+    },
+    {
+      "date": "2026-11-23",
+      "time": "21:00",
+      "object": "Hot Dog",
+      "video": "videos/hot-dog.mp4",
+      "sha256": "d8a627f93d39ace7267fcf6d4bee301e532fee8fd411f2ff11cf2f2794985cdc",
+      "qa_passed": true,
+      "encrypted_parts": 24
     }
   ]
 }

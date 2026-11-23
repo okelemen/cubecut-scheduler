@@ -53,8 +53,15 @@ def oauth_token():
     }).encode("ascii")
     req = request.Request("https://oauth2.googleapis.com/token", data=body,
                           headers={"Content-Type": "application/x-www-form-urlencoded"})
-    with request.urlopen(req, timeout=30) as response:
-        return json.load(response)["access_token"]
+    try:
+        with request.urlopen(req, timeout=30) as response:
+            return json.load(response)["access_token"]
+    except error.HTTPError as exc:
+        try:
+            reason = json.loads(exc.read().decode("utf-8")).get("error", "unknown")
+        except (ValueError, UnicodeDecodeError):
+            reason = "unknown"
+        raise RuntimeError(f"YouTube OAuth refresh failed: HTTP {exc.code}, {reason}") from None
 
 
 def youtube(token, method, resource, params=None, body=None):

@@ -3,6 +3,8 @@ name: CubeCut morning early relay
 on:
   schedule:
     - cron: '31 0 * * *'
+    - cron: '17 2 * * *'
+    - cron: '47 5 * * *'
   workflow_dispatch:
 
 permissions:

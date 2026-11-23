@@ -23,6 +23,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
       CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
+      CUBECUT_MEDIA_KEY: ${{ secrets.CUBECUT_MEDIA_KEY }}
       CHECK_DATE: ${{ inputs.date }}
     steps:
       - uses: actions/checkout@v4
@@ -31,12 +32,17 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -n "$CHECK_DATE" ]]; then
-            python3 preflight.py --date "$CHECK_DATE"
+            TARGET_DATE="$CHECK_DATE"
           elif [[ "${{ github.event.schedule }}" == '11 20 * * *' ]]; then
-            python3 preflight.py --tomorrow
+            TARGET_DATE="$(TZ=Europe/Istanbul date -d tomorrow +%F)"
           else
-            python3 preflight.py
+            TARGET_DATE="$(TZ=Europe/Istanbul date +%F)"
           fi
+          python3 preflight.py --date "$TARGET_DATE"
+          pip install -q cryptography==50.0.1
+          python3 prepare_media.py "$TARGET_DATE" 14:00
+          python3 prepare_media.py "$TARGET_DATE" 21:00
+          echo "Both decrypted media hashes verified for $TARGET_DATE"
       - name: Open failure alarm
         if: failure()
         shell: bash

@@ -1,0 +1,48 @@
+name: CubeCut next-day publication preflight
+
+on:
+  schedule:
+    - cron: '11 20 * * *' # 23:11 TR, check tomorrow
+    - cron: '11 5 * * *'  # 08:11 TR, check today
+  workflow_dispatch:
+    inputs:
+      date:
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    environment: cubecut
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CUBECUT_OAUTH_CLIENT_JSON: ${{ secrets.CUBECUT_OAUTH_CLIENT_JSON }}
+      CUBECUT_YOUTUBE_TOKEN_JSON: ${{ secrets.CUBECUT_YOUTUBE_TOKEN_JSON }}
+      CHECK_DATE: ${{ inputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check OAuth, both slots, metadata, translations and encrypted media
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "$CHECK_DATE" ]]; then
+            python3 preflight.py --date "$CHECK_DATE"
+          elif [[ "${{ github.event.schedule }}" == '11 20 * * *' ]]; then
+            python3 preflight.py --tomorrow
+          else
+            python3 preflight.py
+          fi
+      - name: Open failure alarm
+        if: failure()
+        shell: bash
+        run: |
+          title="CubeCut PREFLIGHT FAILED ${CHECK_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          if ! gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json title --jq '.[].title' | grep -Fxq "$title"; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" \
+              --body "The next publication day is not ready. Inspect run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. Do not claim either slot is ready."
+          fi

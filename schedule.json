@@ -63,6 +63,15 @@
       "sha256": "3fc8e7c293b74e2e0d02d6bc9624540df2cfe5d09da203384aa5610a8c24e26f",
       "qa_passed": true,
       "encrypted_parts": 28
+    },
+    {
+      "date": "2026-11-23",
+      "time": "14:00",
+      "object": "Egg",
+      "video": "videos/egg.mp4",
+      "sha256": "4d555756b40340e4c2bcd1085030b775ae838a2f0e0f574f700427efaa1adf54",
+      "qa_passed": true,
+      "encrypted_parts": 26
     }
   ]
 }

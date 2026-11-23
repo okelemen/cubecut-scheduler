@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '11 20 * * *' # 23:11 TR, check tomorrow
     - cron: '11 5 * * *'  # 08:11 TR, check today
+    - cron: '11 14 * * *' # 17:11 TR, recheck OAuth before evening upload
   workflow_dispatch:
     inputs:
       date:

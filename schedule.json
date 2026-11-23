@@ -90,6 +90,15 @@
       "sha256": "2f62a14d0ea692fb37e45095d02ed801947fe6672f06149c7201d4c013799098",
       "qa_passed": true,
       "encrypted_parts": 23
+    },
+    {
+      "date": "2026-11-24",
+      "time": "21:00",
+      "object": "Black Forest Cake",
+      "video": "videos/black-forest-cake.mp4",
+      "sha256": "7d16dbb03469220e82ad6e0f6c88ad51509e6ceef7267ba09c98bc7319166f79",
+      "qa_passed": true,
+      "encrypted_parts": 26
     }
   ]
 }

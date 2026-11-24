@@ -65,6 +65,10 @@ jobs:
             echo 'Morning job started before its viable Turkey-time window; skipping stale cron event.'
             exit 0
           fi
+          if [[ "$DRY_RUN" != "true" ]]; then
+            git fetch -q origin main
+            git show origin/main:state.json > state.json
+          fi
           if [[ "$DRY_RUN" != "true" ]] && python3 already_done.py "$TARGET_DATE" 14:00; then
             echo 'Morning slot already published and commented.'
             exit 0
@@ -126,6 +130,10 @@ jobs:
              (( 10#$(TZ=Europe/Istanbul date +%H) < 15 )); then
             echo 'Evening job started before its viable Turkey-time window; skipping stale cron event.'
             exit 0
+          fi
+          if [[ "$DRY_RUN" != "true" ]]; then
+            git fetch -q origin main
+            git show origin/main:state.json > state.json
           fi
           if [[ "$DRY_RUN" != "true" ]] && python3 already_done.py "$TARGET_DATE" 21:00; then
             echo 'Evening slot already published and commented.'

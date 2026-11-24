@@ -35,7 +35,11 @@ jobs:
           if [[ -n "$CHECK_DATE" ]]; then
             TARGET_DATE="$CHECK_DATE"
           elif [[ "${{ github.event.schedule }}" == '11 20 * * *' ]]; then
-            TARGET_DATE="$(TZ=Europe/Istanbul date -d tomorrow +%F)"
+            if (( 10#$(TZ=Europe/Istanbul date +%H) < 12 )); then
+              TARGET_DATE="$(TZ=Europe/Istanbul date +%F)"
+            else
+              TARGET_DATE="$(TZ=Europe/Istanbul date -d tomorrow +%F)"
+            fi
           else
             TARGET_DATE="$(TZ=Europe/Istanbul date +%F)"
           fi
@@ -51,7 +55,11 @@ jobs:
           if [[ -n "$CHECK_DATE" ]]; then
             target="$CHECK_DATE"
           elif [[ "${{ github.event.schedule }}" == '11 20 * * *' ]]; then
-            target="$(TZ=Europe/Istanbul date -d tomorrow +%F)"
+            if (( 10#$(TZ=Europe/Istanbul date +%H) < 12 )); then
+              target="$(TZ=Europe/Istanbul date +%F)"
+            else
+              target="$(TZ=Europe/Istanbul date -d tomorrow +%F)"
+            fi
           else
             target="$(TZ=Europe/Istanbul date +%F)"
           fi

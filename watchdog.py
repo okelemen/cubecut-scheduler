@@ -35,6 +35,9 @@ if args.phase == "publish":
 target = datetime.fromisoformat(f"{date}T{target_time}").replace(tzinfo=ZONE)
 age = now - target
 limit = timedelta(hours=1, minutes=45) if args.phase == "stage" else timedelta(minutes=25)
+if age < timedelta(0):
+    print(f"Skipping stale scheduled watchdog before today's {target_time} TR check")
+    raise SystemExit(0)
 if not timedelta(0) <= age <= limit:
     raise RuntimeError(f"Missing {args.phase} state outside bounded backup window: {date} {publish_time}")
 

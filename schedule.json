@@ -108,6 +108,15 @@
       "sha256": "0b46cca07db43be9504dca33256ba9d34536bf48924db3c3faa08ce90203378d",
       "qa_passed": true,
       "encrypted_parts": 26
+    },
+    {
+      "date": "2026-11-26",
+      "time": "21:00",
+      "object": "Red Velvet Cake",
+      "video": "videos/red-velvet-cake.mp4",
+      "sha256": "f61abd2342a6508ab71aa937340b8060ee63d11bbcde3dfd769b5b9429c9fcbc",
+      "qa_passed": true,
+      "encrypted_parts": 25
     }
   ]
 }

@@ -99,6 +99,15 @@
       "sha256": "7d16dbb03469220e82ad6e0f6c88ad51509e6ceef7267ba09c98bc7319166f79",
       "qa_passed": true,
       "encrypted_parts": 26
+    },
+    {
+      "date": "2026-11-25",
+      "time": "21:00",
+      "object": "Rainbow Layer Cake",
+      "video": "videos/rainbow-layer-cake.mp4",
+      "sha256": "0b46cca07db43be9504dca33256ba9d34536bf48924db3c3faa08ce90203378d",
+      "qa_passed": true,
+      "encrypted_parts": 26
     }
   ]
 }

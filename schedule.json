@@ -144,6 +144,15 @@
       "sha256": "bc930dac205621ae2cb30c3a5b540c4bfba4b314bffc7fcfaec87050eca78c57",
       "qa_passed": true,
       "encrypted_parts": 25
+    },
+    {
+      "date": "2026-11-28",
+      "time": "14:00",
+      "object": "Matcha White Chocolate Bar",
+      "video": "videos/matcha-white-chocolate-bar.mp4",
+      "sha256": "ea215a979143e7856d24ec6639fe6d3badf531d07df8b03cb2e88dd9446bdbcb",
+      "qa_passed": true,
+      "encrypted_parts": 24
     }
   ]
 }

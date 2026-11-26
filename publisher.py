@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -112,6 +113,8 @@ def metadata(slot):
         raise RuntimeError(f"Fixed upload title or Studio tags changed for {slot['object']}")
     if len(title) > 100 or len(",".join(tags)) > 500 or not description.startswith(f"One {name}, six rounds:"):
         raise RuntimeError("Video metadata does not match the approved template")
+    if not re.search(r"\babout \d+(?:\.\d+)? million cubes\b", description):
+        raise RuntimeError("English cube count must include the million unit")
     if f"#satisfying #cutting #{name.replace(' ', '')} #asmr #3danimation #shorts" not in description:
         raise RuntimeError("Object-specific description hashtag is missing")
     return {"snippet": {"title": title, "description": description, "tags": tags,

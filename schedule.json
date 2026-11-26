@@ -153,6 +153,15 @@
       "sha256": "ea215a979143e7856d24ec6639fe6d3badf531d07df8b03cb2e88dd9446bdbcb",
       "qa_passed": true,
       "encrypted_parts": 24
+    },
+    {
+      "date": "2026-11-28",
+      "time": "21:00",
+      "object": "Giant Three-Tier Chocolate Drip Cake",
+      "video": "videos/giant-three-tier-chocolate-drip-cake.mp4",
+      "sha256": "b15e45b1d68435528541532c556d160f77946293c40c729287a10d4ce5048200",
+      "qa_passed": true,
+      "encrypted_parts": 24
     }
   ]
 }

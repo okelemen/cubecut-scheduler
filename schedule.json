@@ -111,6 +111,15 @@
     },
     {
       "date": "2026-11-26",
+      "time": "14:00",
+      "object": "Rocky Road Chocolate Slab",
+      "video": "videos/rocky-road-chocolate-slab.mp4",
+      "sha256": "3bf0762ffd1efac9c1cbf8d4c2ccd9eeb8c60b4540a875d0ff78315e306fe913",
+      "qa_passed": true,
+      "encrypted_parts": 24
+    },
+    {
+      "date": "2026-11-26",
       "time": "21:00",
       "object": "Red Velvet Cake",
       "video": "videos/red-velvet-cake.mp4",

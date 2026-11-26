@@ -126,6 +126,15 @@
       "sha256": "f61abd2342a6508ab71aa937340b8060ee63d11bbcde3dfd769b5b9429c9fcbc",
       "qa_passed": true,
       "encrypted_parts": 25
+    },
+    {
+      "date": "2026-11-27",
+      "time": "21:00",
+      "object": "Galaxy Mirror Glaze Cake",
+      "video": "videos/galaxy-mirror-glaze-cake.mp4",
+      "sha256": "bc930dac205621ae2cb30c3a5b540c4bfba4b314bffc7fcfaec87050eca78c57",
+      "qa_passed": true,
+      "encrypted_parts": 25
     }
   ]
 }

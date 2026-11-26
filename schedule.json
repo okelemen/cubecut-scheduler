@@ -129,6 +129,15 @@
     },
     {
       "date": "2026-11-27",
+      "time": "14:00",
+      "object": "Honeycomb Crunch Chocolate Bar",
+      "video": "videos/honeycomb-crunch-chocolate-bar.mp4",
+      "sha256": "85cd6e7bdbb0f98bd37369a7e9d6077cbb4ba76e704a5b496afab4f124079fe2",
+      "qa_passed": true,
+      "encrypted_parts": 24
+    },
+    {
+      "date": "2026-11-27",
       "time": "21:00",
       "object": "Galaxy Mirror Glaze Cake",
       "video": "videos/galaxy-mirror-glaze-cake.mp4",

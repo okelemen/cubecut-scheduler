@@ -16,6 +16,7 @@ on:
         options:
           - morning
           - evening
+          - relay-evening
       date:
         required: false
         type: string
@@ -29,10 +30,29 @@ on:
         type: boolean
 
 permissions:
+  actions: write
   contents: write
   issues: write
 
 jobs:
+  relay-evening:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.slot == 'relay-evening' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_DATE: ${{ inputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Launch evening publication in its safe time window
+        shell: bash
+        run: |
+          set -euo pipefail
+          date="${TARGET_DATE:-$(TZ=Europe/Istanbul date +%F)}"
+          python3 wait_until.py "$date" 15:15
+          gh workflow run publish.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            -f slot=evening -f date="$date" -f dry_run=false -f recovery=false
+
   morning:
     concurrency:
       group: cubecut-morning-${{ inputs.dry_run && 'dry' || 'live' }}

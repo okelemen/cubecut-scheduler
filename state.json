@@ -115,7 +115,7 @@
     "video_id": "vxa-Y4EcWR4",
     "uploaded": true,
     "localized": true,
-    "public": false,
-    "commented": false
+    "public": true,
+    "commented": true
   }
 }

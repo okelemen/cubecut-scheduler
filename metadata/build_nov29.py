@@ -100,6 +100,11 @@ for slug, spec in SPECS.items():
             desc=re.sub(r"^Egy [^,]+","Egy "+product.casefold(),desc,count=1)
         elif not replaced:
             raise ValueError((slug,lang,prior))
+        # The old template may have an article with a different grammatical
+        # gender. Start localized descriptions with the product name itself.
+        start=desc.casefold().find(product.casefold())
+        if start>0:
+            desc=desc[start:]
         if lang in ("ja","ko"):
             desc=desc.replace(old_count,new_count,1)
         else:
